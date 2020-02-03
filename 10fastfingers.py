@@ -4,13 +4,25 @@ from selenium import webdriver
 from time import sleep
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
+import sys
 
-val = float(input("Enter a value between 0 and 2: \n"))
+try:
+    val = float(input("Enter a value between 0 and 2: \n"))
+except ValueError as e:
+    print("Invalid input")
+    sys.exit() 
+
 browser = webdriver.Chrome(executable_path=r"/usr/lib/chromium/chromedriver")
 browser.get('https://10fastfingers.com/typing-test/english')
 html = browser.page_source
 soup = BeautifulSoup(html,'html.parser')
-words = (soup.find('div',{'id':'wordlist'}).text).split('|')
+try:
+    words = (soup.find('div',{'id':'wordlist'}).text).split('|')
+except AttributeError as e:
+    print("Error, website could not load.")
+    browser.quit()
+    sys.exit()
+
 for i in words:
     browser.find_element_by_id("inputfield").send_keys(i)
     browser.find_element_by_id("inputfield").send_keys(Keys.SPACE)
