@@ -10,10 +10,11 @@ try:
     val = float(input("Enter a value between 0 and 2: \n"))
 except ValueError as e:
     print("Invalid input")
-    sys.exit() 
+    sys.exit()
 
 browser = webdriver.Chrome(executable_path=r"/usr/lib/chromium/chromedriver")
 browser.get('https://10fastfingers.com/typing-test/english')
+sleep(10) #to wait because of cloudflare implementation
 html = browser.page_source
 soup = BeautifulSoup(html,'html.parser')
 try:
